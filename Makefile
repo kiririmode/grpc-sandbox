@@ -10,6 +10,8 @@ devel-deps:
 	brew install protobuf
 	go get -u github.com/Songmu/make2help/cmd/make2help
 	go get -u github.com/golang/protobuf/protoc-gen-go
+	go get github.com/fullstorydev/grpcurl
+	go install github.com/fullstorydev/grpcurl/cmd/grpcurl
 
 ## Compile .proto to golang sources
 pb:
@@ -19,4 +21,4 @@ pb:
 help:
 	@make2help $(MAKEFILE_LIST)
 
-.PHONY: dev devel-deps help
+.PHONY: dev devel-deps pb help

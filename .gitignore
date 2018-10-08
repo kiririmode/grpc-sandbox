@@ -10,3 +10,12 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+# Compiled Go files from compiling .proto
+*.pb.go
+
+# Flycheck files
+flycheck_*
+
+# vendoring directory
+vendor/
