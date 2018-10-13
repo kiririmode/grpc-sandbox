@@ -13,6 +13,7 @@ devel-deps:
 	go get github.com/fullstorydev/grpcurl
 	go install github.com/fullstorydev/grpcurl/cmd/grpcurl
 	go get -u golang.org/x/lint/golint
+	go get -u github.com/haya14busa/goverage
 
 ## Compile .proto to golang sources
 pb:
@@ -25,6 +26,11 @@ lint:
 ## test
 test:
 	go test ./...
+
+## get coverage
+coverage:
+	goverage -v -race -covermode=atomic -coverprofile=coverage.out ./...
+	go tool cover -html=coverage.out
 
 ## show help
 help:
