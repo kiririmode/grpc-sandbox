@@ -12,10 +12,15 @@ devel-deps:
 	go get -u github.com/golang/protobuf/protoc-gen-go
 	go get github.com/fullstorydev/grpcurl
 	go install github.com/fullstorydev/grpcurl/cmd/grpcurl
+	go get -u golang.org/x/lint/golint
 
 ## Compile .proto to golang sources
 pb:
 	protoc -I. helloworld.proto --go_out=plugins=grpc:helloworld
+
+## lint
+lint:
+	go vet -all ./...
 
 ## show help
 help:
