@@ -22,6 +22,10 @@ pb:
 lint:
 	go vet -all ./...
 
+## test
+test:
+	go test ./...
+
 ## show help
 help:
 	@make2help $(MAKEFILE_LIST)
