@@ -1,13 +1,14 @@
 .DEFAULT_GOAL := help
 
+DOCKER_TAG=latest
+
 ## Install dependencies to use this product
-dev:
+deps:
 	$(if $(shell which dep), @echo "dep has already installed", go get -u github.com/golang/dep/cmd/dep)
 	dep ensure
 
 ## Install dependencies to develop this product
 devel-deps:
-	brew install protobuf
 	go get -u github.com/Songmu/make2help/cmd/make2help
 	go get -u github.com/golang/protobuf/protoc-gen-go
 	go get github.com/fullstorydev/grpcurl
@@ -31,6 +32,10 @@ test:
 coverage:
 	goverage -v -race -covermode=atomic -coverprofile=coverage.out ./...
 	go tool cover -html=coverage.out
+
+## gRPC サーバの Docker イメージを作成する。DOCKER_TAG に image の tag 名を設定できる (default: latest)。
+docker-build:
+	docker build --squash -t kiririmode/grpc-sandbox:$(DOCKER_TAG) .
 
 ## show help
 help:

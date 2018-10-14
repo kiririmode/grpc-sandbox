@@ -8,7 +8,6 @@ import (
 	"net"
 
 	pb "github.com/kiririmode/grpc-sandbox/helloworld"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
@@ -60,7 +59,7 @@ func newServer() *server {
 }
 
 func main() {
-	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", 8000))
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 8000))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}

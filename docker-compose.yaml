@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  grpc-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: grpc-server:latest
+    ports:
+      - "8888:8000"
