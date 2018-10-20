@@ -1,0 +1,9 @@
+unittest:
+  i: 10
+  s: hoge
+  ss: 
+    - hoge
+    - fuga
+  b: true
+  utf8byte: abcde
+port: 10000
