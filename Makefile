@@ -15,6 +15,7 @@ devel-deps:
 	go install github.com/fullstorydev/grpcurl/cmd/grpcurl
 	go get -u golang.org/x/lint/golint
 	go get -u github.com/haya14busa/goverage
+	go get github.com/ckaznocha/protoc-gen-lint
 
 ## Compile .proto to golang sources
 pb:
@@ -22,6 +23,7 @@ pb:
 
 ## lint
 lint:
+	protoc -I. helloworld.proto --lint_out=.
 	go vet -all ./...
 
 ## test
