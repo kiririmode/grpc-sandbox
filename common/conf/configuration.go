@@ -4,6 +4,7 @@ import (
 	"encoding/hex"
 	"io"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
@@ -52,6 +53,16 @@ func NewConfiguration(appName, envname string, searchPaths []string) *Configurat
 		paths:           searchPaths,
 		viper:           viper.New(),
 	}
+}
+
+// NewConfigurationFromReader は、in から読み込んだ内容に紐付く新しい設定を返却する。
+func NewConfigurationFromReader(format string, in io.Reader) (*Configuration, error) {
+	v := viper.New()
+	v.SetConfigType(format)
+	if err := v.ReadConfig(in); err != nil {
+		return nil, errors.Wrapf(err, "failed to init Configuration with %s", in)
+	}
+	return &Configuration{viper: v}, nil
 }
 
 // Name は初期化対象である "configuration" を返却する
@@ -127,6 +138,11 @@ func (c *Configuration) GetByte(key string, enc Encoding) (b []byte, err error) 
 	}
 
 	return b, err
+}
+
+// GetDuration は、key に対応する設定値を Duration として返却する
+func (c *Configuration) GetDuration(key string) time.Duration {
+	return c.viper.GetDuration(key)
 }
 
 // SetFormat は設定ファイルのフォーマットを指定する。

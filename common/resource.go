@@ -19,6 +19,13 @@ type ResourceManager struct {
 	resources []Resource
 }
 
+// NewResourceManager は、管理対象として rs を含む新しい ResourceManager を返却する
+func NewResourceManager(rs []Resource) *ResourceManager {
+	return &ResourceManager{
+		resources: rs,
+	}
+}
+
 // AddResource はマネージャが管理する Resouce として r を追加する
 func (m *ResourceManager) AddResource(r Resource) *ResourceManager {
 	m.resources = append(m.resources, r)

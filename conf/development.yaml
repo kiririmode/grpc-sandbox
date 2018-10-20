@@ -1,0 +1,7 @@
+log:
+  basename: server.log # ログファイル名
+  rotation_interval: 24h # ローテーションの時間
+  rotation_counts: 7 # 保持しておくファイル数
+  output_stdout: true # 標準出力にもログを出力する
+  format: json # json or text
+  level: debug

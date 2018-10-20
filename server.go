@@ -4,9 +4,11 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"log"
 	"net"
 
+	"github.com/kiririmode/grpc-sandbox/common"
+	"github.com/kiririmode/grpc-sandbox/common/conf"
+	"github.com/kiririmode/grpc-sandbox/common/log"
 	pb "github.com/kiririmode/grpc-sandbox/helloworld"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -28,7 +30,6 @@ func (s *server) SayHello(ctx context.Context, req *pb.HelloRequest) (*pb.HelloR
 	ps := ""
 	if len(postscripts) > 0 {
 		ps = postscripts[0]
-		log.Printf("meatadata postscript: %s", ps)
 	}
 
 	// send reply with metadata
@@ -59,9 +60,22 @@ func newServer() *server {
 }
 
 func main() {
+
+	// リソースの準備
+	config := conf.NewConfiguration("stubserver", "development", []string{"conf"})
+	logr := log.NewLog(config)
+
+	// リソースの開始・終了処理
+	rm := common.NewResourceManager([]common.Resource{config, logr})
+	rm.Initialize()
+	defer rm.Finalize()
+
+	logger := logr.Logger
+	logger.Info("initialization succeeds")
+
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 8000))
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		logger.Fatalf("failed to listen: %v", err)
 	}
 	grpcServer := grpc.NewServer()
 	pb.RegisterGreeterServer(grpcServer, newServer())
@@ -70,6 +84,6 @@ func main() {
 	reflection.Register(grpcServer)
 
 	if err = grpcServer.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+		logger.Fatalf("failed to serve: %v", err)
 	}
 }

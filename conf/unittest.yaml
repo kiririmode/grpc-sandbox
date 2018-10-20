@@ -6,4 +6,5 @@ unittest:
     - fuga
   b: true
   utf8byte: abcde
+  dr: 1h10m10s
 port: 10000

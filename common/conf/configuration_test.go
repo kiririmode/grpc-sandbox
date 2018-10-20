@@ -5,7 +5,9 @@ import (
 	"path/filepath"
 	"reflect"
 	"strconv"
+	"strings"
 	"testing"
+	"time"
 )
 
 // Encoding の String() が正しいことを確認する
@@ -76,6 +78,15 @@ func TestConfigurationLifecycleResource_Get(t *testing.T) {
 				t.Errorf("expected %x, but got %x", expectedByte, actualByte)
 			}
 		}
+		// duration
+		actualDuration := c.GetDuration("unittest.dr")
+		expectedDuration, err := time.ParseDuration("1h10m10s")
+		if err != nil {
+			t.Errorf("error should be nil, but got %s", err)
+		}
+		if actualDuration != expectedDuration {
+			t.Errorf("expected %s, but got %s", expectedDuration, actualDuration)
+		}
 	})
 
 	t.Run("環境変数で上書きできること", func(t *testing.T) {
@@ -90,4 +101,15 @@ func TestConfigurationLifecycleResource_Get(t *testing.T) {
 		}
 	})
 
+}
+
+func TestConfiguration_ReadConfig(t *testing.T) {
+	c, err := NewConfigurationFromReader("properties", strings.NewReader("hoge=fuga"))
+	if err != nil {
+		t.Fatalf("err must be nil, but got %s", err)
+	}
+	actual := c.GetString("hoge")
+	if "fuga" != actual {
+		t.Errorf("expected fuga, but got %s", actual)
+	}
 }
