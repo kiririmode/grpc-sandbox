@@ -8,13 +8,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-type server struct{}
-
-func newServer() *server {
-	s := &server{}
-	return s
-}
-
 func main() {
 	s := grpc.NewServer()
 

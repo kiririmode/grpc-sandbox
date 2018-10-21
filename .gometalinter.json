@@ -1,0 +1,16 @@
+{
+    "DisableAll": true,
+    "Vendor": true,
+    "Sort": ["linter", "severity", "path", "line"],
+    "Exclude": [
+        ".*.pb.go"
+    ],
+    "Enable": [
+        "vet",
+        "golint",
+        "megacheck",
+        "gofmt"
+    ],
+    "LineLength": 150,
+    "Deadline": "2m"
+}

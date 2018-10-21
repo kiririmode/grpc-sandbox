@@ -152,7 +152,7 @@ func (c *Configuration) SetFormat(formatType string) {
 	c.viper.SetConfigType(formatType)
 }
 
-// ReadConfigration は reader から設定を読み込む。
+// ReadConfig は reader から設定を読み込む。
 func (c *Configuration) ReadConfig(in io.Reader) error {
 	return c.viper.ReadConfig(in)
 }

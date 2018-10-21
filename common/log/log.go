@@ -96,6 +96,7 @@ func (l *Log) initializeLogrus(writer io.Writer) (*logrus.Logger, error) {
 	return logger, nil
 }
 
+// Finalize は終了処理として、開いていたリソースを close する
 func (l *Log) Finalize() error {
 	err := l.rl.Close()
 	if err != nil {

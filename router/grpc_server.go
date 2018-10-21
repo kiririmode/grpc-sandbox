@@ -21,26 +21,30 @@ import (
 type GrpcServer struct {
 	server   *grpc.Server
 	config   *conf.Configuration
-	logger   *log.Log
+	log      *log.Log
 	Listener net.Listener
 }
 
+// NewGrpcServer は新たな gRPC サーバのインスタンスを返却する
 func NewGrpcServer(server *grpc.Server, conf *conf.Configuration, logger *log.Log) *GrpcServer {
 	return &GrpcServer{
 		server: server,
 		config: conf,
-		logger: logger,
+		log:    logger,
 	}
 }
 
+// Name は、固定で "grpc server" を返却する
 func (s *GrpcServer) Name() string {
 	return "grpc server"
 }
 
+// Initialize は gRPC サーバの初期化処理として、TCP ポートを Listenし、
+// Service の登録と Reflection の有効化を行う
 func (s *GrpcServer) Initialize() error {
 	port := s.config.GetInt("server.port")
 
-	s.logger.Logger.Infof("listening to tcp port %d", port)
+	s.log.Logger.Infof("listening to tcp port %d", port)
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		return errors.Wrapf(err, "failed to listen port %d", port)
@@ -53,6 +57,7 @@ func (s *GrpcServer) Initialize() error {
 	return nil
 }
 
+// Finalize は終了処理として open したポートの close を行う
 func (s *GrpcServer) Finalize() error {
 	err := s.Listener.Close()
 	if err != nil {
@@ -61,6 +66,7 @@ func (s *GrpcServer) Finalize() error {
 	return nil
 }
 
+// Serve はポートの Listener を起動し、gRPC API のリクエストを処理できる状態にする
 func (s *GrpcServer) Serve() error {
 	if err := s.server.Serve(s.Listener); err != nil {
 		return errors.Errorf("failed to serve: %v", err)
@@ -68,6 +74,7 @@ func (s *GrpcServer) Serve() error {
 	return nil
 }
 
+// SayHello は挨拶をする
 func (s *GrpcServer) SayHello(ctx context.Context, req *helloworld.HelloRequest) (*helloworld.HelloReply, error) {
 	if req.Name == "error" {
 		return nil, status.Error(codes.Internal, "Internal Error")
@@ -86,6 +93,7 @@ func (s *GrpcServer) SayHello(ctx context.Context, req *helloworld.HelloRequest)
 	return &helloworld.HelloReply{Message: fmt.Sprintf("Hello %s", req.Name)}, nil
 }
 
+// SayHelloToMany は複数に挨拶をする
 func (s *GrpcServer) SayHelloToMany(stream helloworld.Greeter_SayHelloToManyServer) error {
 	for {
 		req, err := stream.Recv()

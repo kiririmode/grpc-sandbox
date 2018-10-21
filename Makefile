@@ -24,7 +24,7 @@ pb:
 ## lint
 lint:
 	protoc -I. helloworld.proto --lint_out=.
-	go vet -all ./...
+	gometalinter ./...
 
 ## test
 test:

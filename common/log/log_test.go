@@ -24,7 +24,7 @@ func TestLog_initializeLogrus(t *testing.T) {
 	t.Run("正常系", func(t *testing.T) {
 		testCases := []struct {
 			config                  string
-			expectedIsJsonFormatter bool
+			expectedIsJSONFormatter bool
 			expectedLevel           logrus.Level
 		}{
 			{
@@ -33,7 +33,7 @@ func TestLog_initializeLogrus(t *testing.T) {
 			log.output_stdout=false
 			log.level=info
 			`,
-				expectedIsJsonFormatter: true,
+				expectedIsJSONFormatter: true,
 				expectedLevel:           logrus.InfoLevel,
 			},
 			{
@@ -42,7 +42,7 @@ func TestLog_initializeLogrus(t *testing.T) {
 			log.output_stdout=true
 			log.level=debug
 			`,
-				expectedIsJsonFormatter: false,
+				expectedIsJSONFormatter: false,
 				expectedLevel:           logrus.DebugLevel,
 			},
 		}
@@ -61,8 +61,8 @@ func TestLog_initializeLogrus(t *testing.T) {
 
 			// Formatter が想定通りであること
 			_, ok := logger.Formatter.(*logrus.JSONFormatter)
-			if ok != tc.expectedIsJsonFormatter {
-				t.Errorf("formatter should be json?: expected %t, but got %t", tc.expectedIsJsonFormatter, ok)
+			if ok != tc.expectedIsJSONFormatter {
+				t.Errorf("formatter should be json?: expected %t, but got %t", tc.expectedIsJSONFormatter, ok)
 			}
 			// LogLevel が想定通りであること
 			if tc.expectedLevel != logger.GetLevel() {
